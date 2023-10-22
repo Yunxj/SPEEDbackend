@@ -32,20 +32,39 @@ export class PaperService {
       if (query.SE) filterArray.push({SE: {$regex: regexField3}});
       if (query.startYear && query.endYear) {
         filterArray.push({
-            yearOfPublication: {
-                $gte: Number(query.startYear),
-                $lte: Number(query.endYear)
-            }
+          yearOfPublication: {
+            $gte: Number(query.startYear),
+            $lte: Number(query.endYear),
+          },
         });
-    } else if (query.startYear) {
+      } else if (query.startYear) {
         filterArray.push({
-            yearOfPublication: { $gte: Number(query.startYear) }
+          yearOfPublication: {$gte: Number(query.startYear)},
         });
-    } else if (query.endYear) {
+      } else if (query.endYear) {
         filterArray.push({
-            yearOfPublication: { $lte: Number(query.endYear) }
+          yearOfPublication: {$lte: Number(query.endYear)},
         });
-    }
+      }
+
+      if (!query?.role) {
+        filterArray.push({
+          approval: 1,
+        });
+      } else if (query?.role == 0) {
+        filterArray.push({
+          approval: {$lte: 1},
+        });
+      } else if (query?.role == 1) {
+        filterArray.push({
+          approval: {$lte: 2},
+        });
+      } else if (query?.role == 2) {
+        filterArray.push({
+          approval: {$gt: 0},
+        });
+      }
+
       let filter = {};
       if (filterArray.length > 0) {
         filter = {
@@ -53,7 +72,7 @@ export class PaperService {
         };
       }
 
-      console.log('filter', filterArray);
+      console.log('filter', filter, filterArray);
 
       const sortBy: any = query.sortBy;
       const order = query.order;
@@ -68,7 +87,7 @@ export class PaperService {
       console.log('result', result);
       return {code: 1, message: 'sucess', data: [...result]};
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return {code: 0, message: 'getPaper fail'};
     }
   }

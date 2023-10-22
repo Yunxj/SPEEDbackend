@@ -5,6 +5,7 @@ import {ConfigModule} from '@nestjs/config';
 import {MongooseModule} from '@nestjs/mongoose';
 import {PaperModule} from './paper/paper.module';
 import {UserModule} from './user/user.module';
+import {UsersModule} from './user-list/user-list.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +20,7 @@ import {UserModule} from './user/user.module';
     ),
     PaperModule,
     UserModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

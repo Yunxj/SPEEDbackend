@@ -58,6 +58,7 @@ export interface getPaperInterFace {
   pages?: string;
   DOI?: string;
   approval?: number;
-  startYear:number | string;
-  endYear:number | string;
+  startYear: number | string;
+  endYear: number | string;
+  role?: number | string;
 }

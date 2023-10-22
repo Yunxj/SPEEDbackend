@@ -30,4 +30,9 @@ export class UserController {
   index1(@Param() param: {id: string}) {
     return this.userService.deleteUser(param);
   }
+  // 更新
+  @Post('/update')
+  index4(@Body() params: User) {
+    return this.userService.update(params);
+  }
 }

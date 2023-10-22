@@ -10,10 +10,10 @@ export const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    // 1版主，2数据分析师 3 超管
+    // 0普通 1版主，2数据分析师 3 超管
     role: {
       type: String,
-      require: true,
+      require: false,
     },
   },
   {
@@ -24,5 +24,6 @@ export const UserSchema = new mongoose.Schema(
 export interface User {
   name: string;
   password: string;
-  role: string;
+  role?: string;
+  id?: string;
 }
