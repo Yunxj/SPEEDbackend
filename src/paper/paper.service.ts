@@ -54,11 +54,11 @@ export class PaperService {
         };
       } else if (query?.role == 0) {
         filterObj = {
-          approval: {$lte: 1},
+          approval: [{approval: {$lte: 0}}, {approval: 3}],
         };
       } else if (query?.role == 1) {
         filterObj = {
-          approval: {$lte: 2},
+          approval: {$lte: 3},
         };
       } else if (query?.role == 2) {
         filterObj = {
@@ -67,16 +67,37 @@ export class PaperService {
       } else if (query?.role == 3) {
         filterObj = {};
       }
-      let filter = {};
+      let filter: any = {};
       if (filterArray.length > 0) {
-        filter = {
-          $or: filterArray,
-          approval: filterObj?.approval,
-        };
+        if (query?.role == 0) {
+          filter = {
+            $and: [
+              {
+                $or: [{approval: {$lte: 0}}, {approval: 3}],
+              },
+              ...filterArray,
+            ],
+          };
+        } else if (query?.role == 3) {
+          filter = {
+            $or: filterArray,
+          };
+        } else {
+          filter = {
+            $or: filterArray,
+            approval: filterObj?.approval,
+          };
+        }
       } else if (!!filterObj?.approval) {
-        filter = {
-          approval: filterObj?.approval,
-        };
+        if (query?.role == 0) {
+          filter = {
+            $or: filterObj?.approval,
+          };
+        } else {
+          filter = {
+            approval: filterObj?.approval,
+          };
+        }
       } else {
         filter = {};
       }
