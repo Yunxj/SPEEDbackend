@@ -28,7 +28,11 @@ export class UserService {
         return {code: 0, message};
       } else {
         message = 'login success';
-        return {code: 1, message, data: {role: result[0].role}};
+        return {
+          code: 1,
+          message,
+          data: {role: result[0].role, id: result[0]._id},
+        };
       }
     } catch (err) {
       return {code: 0, message: 'login fail'};

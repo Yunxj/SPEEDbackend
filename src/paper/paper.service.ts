@@ -68,38 +68,50 @@ export class PaperService {
         filterObj = {};
       }
       let filter: any = {};
-      if (filterArray.length > 0) {
-        if (query?.role == 0) {
-          filter = {
-            $and: [
-              {
-                $or: [{approval: {$lte: 0}}, {approval: 3}],
-              },
-              ...filterArray,
-            ],
-          };
-        } else if (query?.role == 3) {
-          filter = {
-            $or: filterArray,
-          };
+      if (query?.search !== '1') {
+        if (filterArray.length > 0) {
+          if (query?.role == 0) {
+            filter = {
+              $and: [
+                {
+                  $or: [
+                    {$and: [{approval: {$lte: 0}}, {userId: query.userId}]},
+                    {approval: 3},
+                  ],
+                },
+                ...filterArray,
+              ],
+            };
+          } else if (query?.role == 3) {
+            filter = {
+              $or: filterArray,
+            };
+          } else {
+            filter = {
+              $or: filterArray,
+              approval: filterObj?.approval,
+            };
+          }
+        } else if (!!filterObj?.approval) {
+          if (query?.role == 0) {
+            filter = {
+              $or: [
+                {$and: [{approval: {$lte: 0}}, {userId: query.userId}]},
+                {approval: 3},
+              ],
+            };
+          } else {
+            filter = {
+              approval: filterObj?.approval,
+            };
+          }
         } else {
-          filter = {
-            $or: filterArray,
-            approval: filterObj?.approval,
-          };
+          filter = {};
         }
-      } else if (!!filterObj?.approval) {
-        if (query?.role == 0) {
-          filter = {
-            $or: filterObj?.approval,
-          };
-        } else {
-          filter = {
-            approval: filterObj?.approval,
-          };
-        }
-      } else {
-        filter = {};
+      } else if (filterArray.length > 0) {
+        filter = {
+          $or: filterArray,
+        };
       }
 
       console.log('filter', filter, filterArray);

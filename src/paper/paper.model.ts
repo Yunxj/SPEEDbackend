@@ -24,6 +24,7 @@ export const PaperSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    userId: String,
   },
   {
     timestamps: true,
@@ -41,7 +42,6 @@ export interface Paper {
   pages: string;
   DOI: string;
   approval: number;
-
 }
 
 export interface getPaperInterFace {
@@ -61,4 +61,6 @@ export interface getPaperInterFace {
   startYear: number | string;
   endYear: number | string;
   role?: number | string;
+  userId?: string;
+  search?: string;
 }
