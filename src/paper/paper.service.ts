@@ -47,28 +47,34 @@ export class PaperService {
         });
       }
 
+      let filterObj: any = {};
       if (!query?.role) {
-        filterArray.push({
+        filterObj = {
           approval: 1,
-        });
+        };
       } else if (query?.role == 0) {
-        filterArray.push({
+        filterObj = {
           approval: {$lte: 1},
-        });
+        };
       } else if (query?.role == 1) {
-        filterArray.push({
+        filterObj = {
           approval: {$lte: 2},
-        });
+        };
       } else if (query?.role == 2) {
-        filterArray.push({
+        filterObj = {
           approval: {$gt: 0},
-        });
+        };
       }
 
       let filter = {};
       if (filterArray.length > 0) {
         filter = {
           $or: filterArray,
+          approval: filterObj?.approval,
+        };
+      } else {
+        filter = {
+          approval: filterObj?.approval,
         };
       }
 
