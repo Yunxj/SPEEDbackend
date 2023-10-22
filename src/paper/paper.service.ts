@@ -50,7 +50,7 @@ export class PaperService {
       let filterObj: any = {};
       if (!query?.role) {
         filterObj = {
-          approval: 1,
+          approval: 3,
         };
       } else if (query?.role == 0) {
         filterObj = {
@@ -64,18 +64,21 @@ export class PaperService {
         filterObj = {
           approval: {$gt: 0},
         };
+      } else if (query?.role == 3) {
+        filterObj = {};
       }
-
       let filter = {};
       if (filterArray.length > 0) {
         filter = {
           $or: filterArray,
           approval: filterObj?.approval,
         };
-      } else {
+      } else if (!!filterObj?.approval) {
         filter = {
           approval: filterObj?.approval,
         };
+      } else {
+        filter = {};
       }
 
       console.log('filter', filter, filterArray);
